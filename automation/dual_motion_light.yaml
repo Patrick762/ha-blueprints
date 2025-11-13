@@ -1,0 +1,83 @@
+blueprint:
+  name: Motion triggered light with two sensors
+  domain: automation
+  input:
+    motion1:
+      name: Sensor 1
+      selector:
+        entity:
+          filter:
+            domain: binary_sensor
+            device_class: motion
+    motion2:
+      name: Sensor 2
+      selector:
+        entity:
+          filter:
+            domain: binary_sensor
+            device_class: motion
+    light:
+      name: Light
+      selector:
+        entity:
+          filter:
+            domain: light
+
+triggers:
+  - trigger: state
+    entity_id: !input motion1
+    to:
+      - "on"
+    id: "on"
+  - trigger: state
+    entity_id: !input motion1
+    to:
+      - "off"
+    id: "off"
+  - trigger: state
+    entity_id: !input motion2
+    to:
+      - "on"
+    id: "on"
+  - trigger: state
+    entity_id: !input motion2
+    to:
+      - "off"
+    id: "off"
+conditions:
+  - condition: or
+    conditions:
+      - condition: trigger
+        id:
+          - "on"
+      - condition: and
+        conditions:
+          - condition: trigger
+            id:
+              - "off"
+          - condition: state
+            entity_id: !input motion1
+            state:
+              - "off"
+          - condition: state
+            entity_id: !input motion2
+            state:
+              - "off"
+actions:
+  - if:
+      - condition: trigger
+        id:
+          - "on"
+    then:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: !input light
+    else:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: !input light
+mode: single
