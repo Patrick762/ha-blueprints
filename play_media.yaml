@@ -1,0 +1,41 @@
+blueprint:
+  name: Play media from Music Assistant
+  domain: script
+  input:
+    player:
+      name: Media player
+      selector:
+        entity:
+          filter:
+            domain: media_player
+    media:
+      name: Media string
+      selector:
+        text:
+    volume:
+      name: Volume
+      selector:
+        number:
+          min: 0
+          max: 1
+          step: 0.01
+
+sequence:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      entity_id: !input player
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: !input volume
+    target:
+      entity_id: !input player
+    enabled: true
+  - action: music_assistant.play_media
+    metadata: {}
+    data:
+      media_id: !input media
+    target:
+      entity_id: !input player
