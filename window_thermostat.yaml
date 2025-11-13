@@ -1,0 +1,75 @@
+blueprint:
+  name: Window triggered Thermostat
+  domain: automation
+  input:
+    window:
+      name: Window sensor
+      selector:
+        entity:
+          filter:
+            device_class: window
+    thermostat:
+      name: Thermostat
+      selector:
+        entity:
+          filter:
+            domain: climate
+    temperature:
+      name: Temperature when window closed
+      selector:
+        number:
+          min: 4
+          max: 30
+
+triggers:
+  - trigger: state
+    entity_id: !input window
+    to:
+      - "on"
+    id: opened
+  - trigger: state
+    entity_id: !input window
+    to:
+      - "off"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    id: closed
+conditions: []
+actions:
+  - if:
+      - condition: trigger
+        id:
+          - opened
+    then:
+      - repeat:
+          count: 10
+          sequence:
+            - action: climate.set_temperature
+              metadata: {}
+              data:
+                temperature: 4
+              target:
+                entity_id: !input thermostat
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 5
+                milliseconds: 0
+    else:
+      - repeat:
+          count: 10
+          sequence:
+            - action: climate.set_temperature
+              metadata: {}
+              data:
+                temperature: !input temperature
+              target:
+                entity_id: !input thermostat
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 5
+                milliseconds: 0
+mode: single
