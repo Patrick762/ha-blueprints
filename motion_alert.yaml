@@ -1,0 +1,46 @@
+blueprint:
+  name: Motion Alert
+  domain: automation
+  input:
+    motion_sensor:
+      name: Motion sensor
+      selector:
+        entity:
+          filter:
+            - domain: binary_sensor
+              device_class: motion
+    light:
+      name: Light
+      selector:
+        entity:
+          filter:
+            domain: light
+    color:
+      name: Color
+      selector:
+        color_rgb:
+
+triggers:
+  - trigger: state
+    entity_id: !input motion_sensor
+    to:
+      - "on"
+conditions: []
+actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      rgb_color: !input color
+    target:
+      entity_id: !input light
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: !input light
+mode: single
