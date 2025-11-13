@@ -1,0 +1,31 @@
+blueprint:
+  name: Stop Mediaplayer after timer
+  domain: automation
+  input:
+    player:
+      name: Media player
+      selector:
+        entity:
+          filter:
+            domain: media_player
+    timer:
+      name: Timer
+      selector:
+        entity:
+          filter:
+            domain: timer
+
+
+triggers:
+  - trigger: event
+    event_type: timer.finished
+    event_data:
+      entity_id: !input timer
+conditions: []
+actions:
+  - action: media_player.media_stop
+    metadata: {}
+    data: {}
+    target:
+      entity_id: !input player
+mode: single
