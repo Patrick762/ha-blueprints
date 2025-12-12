@@ -1,0 +1,272 @@
+blueprint:
+  name: Shelly Remote
+  domain: automation
+  homeassistant:
+    min_version: 2024.6.0
+  input:
+    device:
+      name: Device
+      selector:
+        device:
+          filter:
+            integration: bthome
+    ch_entity:
+      name: Channel entity
+      selector:
+        entity:
+          filter:
+            integration: bthome
+            domain: sensor
+    ch1_section:
+      name: Channel 1
+      input:
+        action_up_ch1:
+          name: Action up
+          default: []
+          selector:
+            action:
+        action_down_ch1:
+          name: Action down
+          default: []
+          selector:
+            action:
+        action_left_ch1:
+          name: Action left
+          default: []
+          selector:
+            action:
+        action_right_ch1:
+          name: Action right
+          default: []
+          selector:
+            action:
+    ch2_section:
+      name: Channel 2
+      input:
+        action_up_ch2:
+          name: Action up
+          default: []
+          selector:
+            action:
+        action_down_ch2:
+          name: Action down
+          default: []
+          selector:
+            action:
+        action_left_ch2:
+          name: Action left
+          default: []
+          selector:
+            action:
+        action_right_ch2:
+          name: Action right
+          default: []
+          selector:
+            action:
+    ch3_section:
+      name: Channel 3
+      input:
+        action_up_ch3:
+          name: Action up
+          default: []
+          selector:
+            action:
+        action_down_ch3:
+          name: Action down
+          default: []
+          selector:
+            action:
+        action_left_ch3:
+          name: Action left
+          default: []
+          selector:
+            action:
+        action_right_ch3:
+          name: Action right
+          default: []
+          selector:
+            action:
+    ch4_section:
+      name: Channel 4
+      input:
+        action_up_ch4:
+          name: Action up
+          default: []
+          selector:
+            action:
+        action_down_ch4:
+          name: Action down
+          default: []
+          selector:
+            action:
+        action_left_ch4:
+          name: Action left
+          default: []
+          selector:
+            action:
+        action_right_ch4:
+          name: Action right
+          default: []
+          selector:
+            action:
+
+triggers:
+  - device_id: !input device
+    domain: bthome
+    type: dimmer
+    subtype: rotate_left
+    trigger: device
+    id: up
+  - device_id: !input device
+    domain: bthome
+    type: dimmer
+    subtype: rotate_right
+    trigger: device
+    id: down
+  - device_id: !input device
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
+    id: left
+  - device_id: !input device
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+    id: right
+conditions: []
+actions:
+  - choose:
+      # Channel 1
+      - conditions:
+          - condition: trigger
+            id:
+              - up
+          - condition: state
+            entity_id: !input ch_entity
+            state: "0"
+        sequence: !input action_up_ch1
+      - conditions:
+          - condition: trigger
+            id:
+              - down
+          - condition: state
+            entity_id: !input ch_entity
+            state: "0"
+        sequence: !input action_down_ch1
+      - conditions:
+          - condition: trigger
+            id:
+              - left
+          - condition: state
+            entity_id: !input ch_entity
+            state: "0"
+        sequence: !input action_left_ch1
+      - conditions:
+          - condition: trigger
+            id:
+              - right
+          - condition: state
+            entity_id: !input ch_entity
+            state: "0"
+        sequence: !input action_right_ch1
+      # Channel 2
+      - conditions:
+          - condition: trigger
+            id:
+              - up
+          - condition: state
+            entity_id: !input ch_entity
+            state: "1"
+        sequence: !input action_up_ch2
+      - conditions:
+          - condition: trigger
+            id:
+              - down
+          - condition: state
+            entity_id: !input ch_entity
+            state: "1"
+        sequence: !input action_down_ch2
+      - conditions:
+          - condition: trigger
+            id:
+              - left
+          - condition: state
+            entity_id: !input ch_entity
+            state: "1"
+        sequence: !input action_left_ch2
+      - conditions:
+          - condition: trigger
+            id:
+              - right
+          - condition: state
+            entity_id: !input ch_entity
+            state: "1"
+        sequence: !input action_right_ch2
+      # Channel 3
+      - conditions:
+          - condition: trigger
+            id:
+              - up
+          - condition: state
+            entity_id: !input ch_entity
+            state: "2"
+        sequence: !input action_up_ch3
+      - conditions:
+          - condition: trigger
+            id:
+              - down
+          - condition: state
+            entity_id: !input ch_entity
+            state: "2"
+        sequence: !input action_down_ch3
+      - conditions:
+          - condition: trigger
+            id:
+              - left
+          - condition: state
+            entity_id: !input ch_entity
+            state: "2"
+        sequence: !input action_left_ch3
+      - conditions:
+          - condition: trigger
+            id:
+              - right
+          - condition: state
+            entity_id: !input ch_entity
+            state: "2"
+        sequence: !input action_right_ch3
+      # Channel 4
+      - conditions:
+          - condition: trigger
+            id:
+              - up
+          - condition: state
+            entity_id: !input ch_entity
+            state: "3"
+        sequence: !input action_up_ch4
+      - conditions:
+          - condition: trigger
+            id:
+              - down
+          - condition: state
+            entity_id: !input ch_entity
+            state: "3"
+        sequence: !input action_down_ch4
+      - conditions:
+          - condition: trigger
+            id:
+              - left
+          - condition: state
+            entity_id: !input ch_entity
+            state: "3"
+        sequence: !input action_left_ch4
+      - conditions:
+          - condition: trigger
+            id:
+              - right
+          - condition: state
+            entity_id: !input ch_entity
+            state: "3"
+        sequence: !input action_right_ch4
